@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VAT Calculator</title>
+    <script>
+        function calculateVAT() {
+            var grossPrice = parseFloat(document.getElementById("grossPrice").value);
+            var vatRate = 0.07;
+            var vatAmount = grossPrice * vatRate;
+            var totalAmount = grossPrice + vatAmount;
+            document.getElementById("vatAmount").textContent = "**" + vatAmount.toFixed(2) + "**";
+            document.getElementById("totalAmount").textContent = "**" + totalAmount.toFixed(2) + "**";
+        }
+    </script>
+</head>
+<body>
+    <h1>VAT Calculator</h1>
+    <label for="grossPrice">Gross Price:</label>
+    <input type="text" id="grossPrice" value="100">
+    <button onclick="calculateVAT()">Calculate</button>
+    <br>
+    <div class="result">
+        VAT Amount: <span id="vatAmount">**7.00**</span>
+    </div>
+    <div class="result">
+        Total Amount: <span id="totalAmount">**107.00**</span>
+    </div>
+</body>
+</html>
+
+

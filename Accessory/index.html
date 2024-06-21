@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Accessories</title>
+</head>
+<body>
+    <h1>Car Accessories</h1>
+ 
+    <h3>Add Accessory</h3>
+    <select id="accessory-select">
+        <option value="10">Car Cover</option>
+        <option value="20">Seat Covers</option>
+        <option value="30">Phone Holder</option>
+        <option value="50">Car Radio</option>
+        <option value="100">Steering Wheel Cover</option>
+    </select>
+    <input type="number" id="amount-input" min="1" value="1">
+    <button class="add-button" onclick="addItem()">Add</button>
+ 
+    <h2>Product List</h2>
+    <table id="product-list">
+        <tr>
+            <th>Accessory</th>
+            <th>Amount</th>
+            <th>Price</th>
+        </tr>
+    </table>
+    
+    <h2>Total Price with VAT: <span id="total-price-with-vat">$0</span></h2>
+    
+    <script>
+        function addItem() {
+            var accessorySelect = document.getElementById("accessory-select");
+            var selectedAccessory = accessorySelect.options[accessorySelect.selectedIndex].text;
+            var selectedAccessoryValue = accessorySelect.options[accessorySelect.selectedIndex].value;
+            var amountInput = document.getElementById("amount-input");
+            var amount = amountInput.value;
+            var productTable = document.getElementById("product-list");
+            var totalPriceWithVatElement = document.getElementById("total-price-with-vat");
+            
+            var price = parseFloat(selectedAccessoryValue);
+            var totalPrice = parseFloat(totalPriceWithVatElement.innerText.substring(1));
+            
+            var row = productTable.insertRow(-1);
+            var accessoryCell = row.insertCell(0);
+            var amountCell = row.insertCell(1);
+            var priceCell = row.insertCell(2);
+            
+            accessoryCell.innerHTML = selectedAccessory;
+            amountCell.innerHTML = amount;
+            priceCell.innerHTML = "$" + (price * amount).toFixed(2);
+            
+            totalPrice += price * amount;
+            var vatAmount = totalPrice * 0.07;
+            var totalPriceWithVat = totalPrice + vatAmount;
+            
+            totalPriceWithVatElement.innerHTML = "$" + totalPriceWithVat.toFixed(2);
+        }
+    </script>
+</body>
+</html>
+
