@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import DataTable from './components/DataTable';
 import productList from './accessory-products.json';
@@ -9,6 +9,11 @@ function App() {
 
   const [price, setPrice] = useState(productList[0].price);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [filteredSelectedItems, setFilteredSelectedItems] = useState([]);
+
+  useEffect(() => {
+    setFilteredSelectedItems(selectedItems);
+  }, [selectedItems]);
 
   const handleSelect = () => {
     const pid = parseInt(productRef.current.value);
@@ -20,7 +25,33 @@ function App() {
     const pid = parseInt(productRef.current.value);
     const product = productList.find(p => p.id === pid);
     const q = quantityRef.current.value;
-    setSelectedItems([...selectedItems, { ...product, quantity: q }]);
+    const newItems = [...selectedItems, { ...product, quantity: q }];
+    setSelectedItems(newItems);
+    setFilteredSelectedItems(newItems);
+  };
+
+  const deleteItemByIndex = (index) => {
+    const newItems = selectedItems.filter((_, i) => i !== index);
+    setSelectedItems(newItems);
+    setFilteredSelectedItems(newItems);
+  };
+
+  const search = (keyword) => {
+    setFilteredSelectedItems(
+      selectedItems.filter(item =>
+        item.name.toLowerCase().includes(keyword.toLowerCase())
+      )
+    );
+  };
+
+  const sortAscending = () => {
+    const sortedItems = [...filteredSelectedItems].sort((a, b) => a.name.localeCompare(b.name));
+    setFilteredSelectedItems(sortedItems);
+  };
+
+  const sortDescending = () => {
+    const sortedItems = [...filteredSelectedItems].sort((a, b) => b.name.localeCompare(a.name));
+    setFilteredSelectedItems(sortedItems);
   };
 
   return (
@@ -52,7 +83,13 @@ function App() {
           </Form>
         </Col>
         <Col xs={12} md={6}>
-          <DataTable data={selectedItems} />
+          <DataTable
+            data={filteredSelectedItems}
+            onDelete={deleteItemByIndex}
+            onSearch={search}
+            onSortAscending={sortAscending}
+            onSortDescending={sortDescending}
+          />
         </Col>
       </Row>
     </Container>
@@ -60,3 +97,5 @@ function App() {
 }
 
 export default App;
+
+
